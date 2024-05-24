@@ -75,10 +75,9 @@ class CateProductController extends BaseController
         if ($image) {
             $imageName = time() . '-' . $image->getClientOriginalName();
 
-            $image->move(public_path('images/page'), $imageName);
+            $image->move(public_path('images/category_product'), $imageName);
             $data['avatar'] = $imageName;
         }
-
         $this->model::create($data);
 
         $data['nameItem'] = $this->nameItem;
@@ -122,7 +121,22 @@ class CateProductController extends BaseController
 
         $data = $request->except('_token','return_back','return_list','currentPage');
         $data['updated_at'] = new \DateTime();
-        $data['slug'] = Str::slug($request->input('name_vn'));
+        $data['slug'] = Str::slug($request->input('name_vn'));  
+
+        if ($request->hasFile('avatar')) {
+            $image_path = public_path('images/category_product') . '/' . $current->avatar;
+            $imageName = time() . '-' . $request->avatar->getClientOriginalName();
+
+            $request->avatar->move(public_path('images/category_product'), $imageName);
+
+            $data['avatar'] = $imageName;
+
+            if ($current->avatar && file_exists($image_path)) {
+                unlink($image_path);
+            }
+        } else {
+            $data['avatar'] = $current->avatar;
+        }
 
         $this->model::where('uuid', $uuid)->update($data);
 
