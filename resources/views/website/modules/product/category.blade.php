@@ -12,8 +12,9 @@
                     <div class="breadcrumb-wrap">
                         <nav aria-label="breadcrumb">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home"></i></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">shop</li>
+                                <li class="breadcrumb-item"><a href="{{ route('website.home') }}"><i
+                                            class="fa fa-home"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $categoryProduct->name_vn }}</li>
                             </ul>
                         </nav>
                     </div>
@@ -35,8 +36,10 @@
                             <h5 class="sidebar-title">Sản phẩm</h5>
                             <div class="sidebar-body">
                                 <ul class="shop-categories">
-                                    @foreach($cateProduct as $item)
-                                    <li><a href="{{route('website.categoryProduct', ['name_cate_product' => $item->slug])}}">{{$item->name_vn}} <span>({{$item->products->count()}})</span></a></li>
+                                    @foreach ($cateProduct as $item)
+                                        <li><a
+                                                href="{{ route('website.categoryProduct', ['name_cate_product' => $item->slug]) }}">{{ $item->name_vn }}
+                                                <span>({{ $item->products->count() }})</span></a></li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -155,9 +158,11 @@
                                                 <div class="product-label new">
                                                     <span>new</span>
                                                 </div>
-                                                <div class="product-label discount">
-                                                    <span>10%</span>
-                                                </div>
+                                                @if ($item->discount != 0)
+                                                    <div class="product-label discount">
+                                                        <span>{{ $item->discount }}%</span>
+                                                    </div>
+                                                @endif
                                             </div>
                                             <div class="button-group">
                                                 <a href="wishlist.html" data-bs-toggle="tooltip" data-bs-placement="left"
@@ -176,20 +181,27 @@
                                         <div class="product-caption text-center">
                                             <div class="product-identity">
                                                 <p class="manufacturer-name"><a
-                                                        href="{{route('website.categoryProduct', ['name_cate_product' => $item->cate->slug])}}">{{ $item->cate->name_vn }}</a></p>
+                                                        href="{{ route('website.categoryProduct', ['name_cate_product' => $item->cate->slug]) }}">{{ $item->cate->name_vn }}</a>
+                                                </p>
                                             </div>
                                             <h6 class="product-name">
                                                 <a
                                                     href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">{{ $item->name_vn }}</a>
                                             </h6>
                                             <div class="price-box">
-                                                @php
-                                                    $discountedPrice = $item->price * 0.9;
-                                                @endphp
-                                                <span class="price-regular">{{ number_format($discountedPrice) }}
-                                                    VND</span>
-                                                <span
-                                                    class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                                @if ($item->discount != 0)
+                                                    @php
+                                                        $discountedPrice =
+                                                            $item->price - ($item->price * $item->discount) / 100;
+                                                    @endphp
+                                                    <span class="price-regular">{{ number_format($discountedPrice) }}
+                                                        VND</span>
+                                                    <span
+                                                        class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                                @else
+                                                    <span class="price-regular">{{ number_format($item->price) }}
+                                                        VND</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -198,10 +210,13 @@
                                     <!-- product list item end -->
                                     <div class="product-list-item">
                                         <figure class="product-thumb">
-                                            <a href="{{route('website.detailProduct',['name_cate'=>$item->cate->slug,'name_product'=>$item->slug])}}">
-                                                <img class="pri-img" src="{{ asset('images/products/' . $item->avatar) }}"
+                                            <a
+                                                href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">
+                                                <img class="pri-img"
+                                                    src="{{ asset('images/products/' . $item->avatar) }}"
                                                     alt="{{ $item->name_vn }}">
-                                                <img class="sec-img" src="{{ asset('images/products/' . $item->avatar) }}"
+                                                <img class="sec-img"
+                                                    src="{{ asset('images/products/' . $item->avatar) }}"
                                                     alt="{{ $item->name_vn }}">
                                             </a>
                                             <div class="product-badge">
@@ -228,18 +243,26 @@
                                         </figure>
                                         <div class="product-content-list">
                                             <div class="manufacturer-name">
-                                                <a href="{{route('website.categoryProduct', ['name_cate_product' => $item->cate->slug])}}">{{ $item->cate->name_vn }}</a>
+                                                <a
+                                                    href="{{ route('website.categoryProduct', ['name_cate_product' => $item->cate->slug]) }}">{{ $item->cate->name_vn }}</a>
                                             </div>
                                             <h5 class="product-name"><a
-                                                    href="{{route('website.detailProduct',['name_cate'=>$item->cate->slug,'name_product'=>$item->slug])}}">{{ $item->name_vn }}</a></h5>
+                                                    href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">{{ $item->name_vn }}</a>
+                                            </h5>
                                             <div class="price-box">
-                                                @php
-                                                    $discountedPrice = $item->price * 0.9;
-                                                @endphp
-                                                <span class="price-regular">{{ number_format($discountedPrice) }}
-                                                    VND</span>
-                                                <span
-                                                    class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                                @if ($item->discount != 0)
+                                                    @php
+                                                        $discountedPrice =
+                                                            $item->price - ($item->price * $item->discount) / 100;
+                                                    @endphp
+                                                    <span class="price-regular">{{ number_format($discountedPrice) }}
+                                                        VND</span>
+                                                    <span
+                                                        class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                                @else
+                                                    <span class="price-regular">{{ number_format($item->price) }}
+                                                        VND</span>
+                                                @endif
                                             </div>
                                             <p>{!! $item->intro_vn !!}</p>
                                         </div>
@@ -255,7 +278,7 @@
                         <div class="paginatoin-area text-center">
                             {!! $products->links() !!}
                         </div>
-            
+
                         <!-- end pagination area -->
                     </div>
                 </div>
