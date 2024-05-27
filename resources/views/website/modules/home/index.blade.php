@@ -33,8 +33,8 @@
                                 <figure class="product-thumb">
                                     <a
                                         href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">
-                                        <img src="{{ asset('images/products/' . $item->avatar) }}" alt="{{ $item->name_vn }}"
-                                            loading="lazy">
+                                        <img src="{{ asset('images/products/' . $item->avatar) }}"
+                                            alt="{{ $item->name_vn }}" loading="lazy">
                                     </a>
                                     <div class="product-badge">
                                         <div class="product-label new">
@@ -68,11 +68,18 @@
                                             href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">{{ Str::words($item->name_vn, 10) }}</a>
                                     </h6>
                                     <div class="price-box">
-                                        @php
-                                            $discountedPrice = $item->price * 0.9;
-                                        @endphp
-                                        <span class="price-regular">{{ number_format($discountedPrice) }} VND</span>
-                                        <span class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                        @if ($item->discount != 0)
+                                            @php
+                                                $discountedPrice =
+                                                    $item->price - ($item->price * $item->discount) / 100;
+                                            @endphp
+                                            <span class="price-regular">{{ number_format($discountedPrice) }}
+                                                VND</span>
+                                            <span class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                        @else
+                                            <span class="price-regular">{{ number_format($item->price) }}
+                                                VND</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -145,10 +152,10 @@
                                             <div class="product-label new">
                                                 <span>new</span>
                                             </div>
-                                            @if($item->discount != 0)
-                                            <div class="product-label discount">
-                                                <span>{{ $item->discount }}%</span>
-                                            </div>
+                                            @if ($item->discount != 0)
+                                                <div class="product-label discount">
+                                                    <span>{{ $item->discount }}%</span>
+                                                </div>
                                             @endif
                                         </div>
                                         <div class="button-group">
@@ -157,8 +164,8 @@
                                             <a href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
                                                 title="Add to Compare"><i class="pe-7s-refresh-2"></i></a>
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view"><span
-                                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i
-                                                        class="pe-7s-search"></i></span></a>
+                                                    data-bs-toggle="tooltip" data-bs-placement="left"
+                                                    title="Quick View"><i class="pe-7s-search"></i></span></a>
                                         </div>
                                         <div class="cart-hover">
                                             <button class="btn btn-cart">add to cart</button>
@@ -175,11 +182,19 @@
                                                 href="{{ route('website.detailProduct', ['name_cate' => $item->cate->slug, 'name_product' => $item->slug]) }}">{{ Str::words($item->name_vn, 10) }}</a>
                                         </h6>
                                         <div class="price-box">
-                                            @php
-                                                $discountedPrice = $item->price * 0.9;
-                                            @endphp
-                                            <span class="price-regular">{{ number_format($discountedPrice) }} VND</span>
-                                            <span class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                            @if ($item->discount != 0)
+                                                @php
+                                                    $discountedPrice =
+                                                        $item->price - ($item->price * $item->discount) / 100;
+                                                @endphp
+                                                <span class="price-regular">{{ number_format($discountedPrice) }}
+                                                    VND</span>
+                                                <span
+                                                    class="price-old"><del>{{ number_format($item->price) }}VND</del></span>
+                                            @else
+                                                <span class="price-regular">{{ number_format($item->price) }}
+                                                    VND</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +231,8 @@
                                 <figure class="blog-thumb">
                                     <a
                                         href="{{ route('website.detailNew', ['name_cate' => $item->cate->slug, 'name_new' => $item->slug]) }}">
-                                        <img src="{{ asset('images/news/' . $item->avatar) }}" alt="{{ $item->name_vn }}">
+                                        <img src="{{ asset('images/news/' . $item->avatar) }}"
+                                            alt="{{ $item->name_vn }}">
                                     </a>
                                 </figure>
                                 <div class="blog-content">
