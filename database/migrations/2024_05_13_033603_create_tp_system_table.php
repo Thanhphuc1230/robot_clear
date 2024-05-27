@@ -40,6 +40,7 @@ return new class extends Migration
             $table->text('body_js')->nullable();
             $table->text('footer_js')->nullable();
             $table->text('map')->nullable();
+            $table->text('stk')->nullable();
             $table->timestamps();
         });
     }

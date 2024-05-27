@@ -22,8 +22,8 @@ return new class extends Migration {
             $table->string('brand');
             $table->text('intro_vn');
             $table->text('intro_en')->nullable();
-            $table->decimal('price', 15, 2); 
-            $table->decimal('discount', 5, 2)->nullable(); 
+            $table->decimal('price', 15); 
+            $table->decimal('discount', 5)->nullable(); 
             $table->longText('content_vn');
             $table->longText('content_en')->nullable();
             $table->string('avatar');

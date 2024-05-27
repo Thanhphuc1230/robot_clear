@@ -14,19 +14,14 @@ class HomeController extends Controller
 {
     public function home()
     {
-        // About us
-        $data['about'] = About::first();
+        // Slider
+        $data['sliders'] = Slider::where('status', 1)->orderBy('stt', 'asc')->get();
 
-        $data['cateProductHome'] = CateProduct::with('children')->where('status', 1)->where('home', 1)->orderBy('stt', 'asc')->get();
+        $data['flashSale'] = Product::with('cate')->where('discount','!=',0)->orderBy('stt', 'asc')->get();
 
-        // Lấy ID của tất cả các mảng con
-        $allIds = $data['cateProductHome'] ->pluck('id_category_product')->toArray();
-        foreach ($data['cateProductHome']  as $cate) {
-            $childIds = $cate->children->pluck('id_category_product')->toArray();
-            $allIds = array_merge($allIds, $childIds);
-        }
-        
-      
+        $data['categoryProductHot'] = CateProduct::with('products')->where('home',1)->orderBy('stt', 'asc')->get();
+
+        $data['latestNew'] = News::with('cate')->orderBy('stt', 'asc')->get();
         return view('website.modules.home.index', $data);
     }
 }

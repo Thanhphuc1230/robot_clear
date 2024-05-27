@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('meta_keywords')->nullable();
             $table->string('meta_description')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
-            $table->unsignedTinyInteger('hot')->default(0);
+            $table->unsignedTinyInteger('home')->default(0);
             $table->integer('stt')->default(0)->nullable();
             $table->unsignedBigInteger('parent_id')->default(0);
             $table->timestamps();

@@ -25,6 +25,10 @@ class ProductController extends NewsController
         if (!$data['categoryProduct']) {
             return $this->categoryNews($name_cate_child,Null);
         }
+
+        if($data['categoryProduct']->parent_id == 0){
+            return $this->categoryAll();
+        }
         $categoryProductId = $data['categoryProduct']->id_category_product;
 
         // Lấy danh sách ID của các children

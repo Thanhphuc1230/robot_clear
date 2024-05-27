@@ -75,7 +75,6 @@ Route::name('website.')
 
         // Product child
         Route::get('/{name_cate_product}.html', [Product::class, 'categoryProduct'])->name('categoryProduct');
-        Route::get('/{name_cate}/{name_cate_child}.html', [Product::class, 'categoryProductChild'])->name('categoryProductChild');
 
         //Category News
         Route::get('/{name_cate}.html', [News::class, 'categoryNews'])->name('categoryNews');
